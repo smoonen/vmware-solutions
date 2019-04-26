@@ -41,13 +41,14 @@ print('Supported vSphere versions')
 vers = apihelper.timed_json_get('https://api.vmware-solutions.cloud.ibm.com/v1/vsphere_versions', headers)
 pprint.pprint(vers); print()
 
-# Perform a verification for an NFS instance
+# Perform an order verification for an NFS instance
 print('Verify NFS instance')
 # Preselect server and ensure we choose RAM appropriate for that CPU type
 server = random.choice(cpus)['id']
 server_ram = random.choice([x for x in ram if server in x['supported_server_types']])['id']
 # Preselect Endurance tier
 shared_storage = random.choice(nfs)
+# Build order
 request = {
   'name'            : 'test01',
   'subdomain'       : 'test01',
@@ -75,31 +76,4 @@ request = {
 }
 result = apihelper.timed_json_post('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters?verify_only=true', request, headers)
 pprint.pprint(result); print()
-sys.exit(0)
-#curl -i -H "Content-Type:application/json" -H "Authorization: $TOKEN" -H "ibm_id:smoonen@us.ibm.com" -X POST -d '{"dns_type": "vsi","domain_type":"primary","hardware":{"customized_hardware":{"disks":[],"ram":"RAM_64_GB_DDR4_2133_ECC_NON_REG","server":"INTEL_INTEL_XEON_4110_2_10"},"template_id": "1","quantity": 2},"host_prefix": "host","license_keys":{"nsx":{"key":"","license_type":"base"},"vcenter":{"key":""},"vsphere":{"key":""}}, "location":"dal10","name":"vcs01dal","root_domain":"example.com","shared_storage":{"iops": "LOW_INTENSITY_TIER_Max_12000","quantity": 1,"size": "STORAGE_SPACE_FOR_025IOPS_PER_GB_Max_100","volume":1000},"subdomain":"vcs01dal","vsphere_version":"6.7"}' https://api.vmware-solutions.cloud.ibm.com/v1/vcenters?verify_only=true
-
-# Get vcenters
-print('vCenters')
-json = apihelper.timed_json_request('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters', headers)
-pprint.pprint(json); print()
-if len(json) == 0 :
-  # No vCenters in account
-  sys.exit(0)
-vcenter_id = json[0]['id']
-
-print('vCenter[0] details')
-json = apihelper.timed_json_request('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s' % vcenter_id, headers)
-pprint.pprint(json); print()
-
-print('vCenter[0] clusters')
-json = apihelper.timed_json_request('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s/clusters' % vcenter_id, headers)
-pprint.pprint(json); print()
-if len(json) == 0 :
-  # No clusters in instance
-  sys.exit(0)
-cluster_id = json[0]['id']
-
-print('vcenter[0] clusters[0]')
-json = apihelper.timed_json_request('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s/clusters/%s' % (vcenter_id, cluster_id), headers)
-pprint.pprint(json); print()
 
