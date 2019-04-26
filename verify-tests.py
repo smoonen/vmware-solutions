@@ -49,7 +49,7 @@ server_ram = random.choice([x for x in ram if server in x['supported_server_type
 # Preselect Endurance tier
 shared_storage = random.choice(nfs)
 # Build order
-request = {
+instance_request = {
   'name'            : 'test01',
   'subdomain'       : 'test01',
   'root_domain'     : 'example.com',
@@ -67,6 +67,9 @@ request = {
           'vsan_cache_disks' : []
         },
     },
+  'network'         : {
+      'private_only' : False,
+    },
   'shared_storages' : [ {
       'iops'     : shared_storage['iops'],
       'quantity' : 2,
@@ -74,6 +77,38 @@ request = {
       'volume'   : 4000,
     } ],
 }
-result = apihelper.timed_json_post('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters?verify_only=true', request, headers)
+result = apihelper.timed_json_post('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters?verify_only=true', instance_request, headers)
+pprint.pprint(result); print()
+
+# If there is a VCS instance in our account, perform an add cluster verification as well
+print('Get vCenter instances')
+vcenters = apihelper.timed_json_get('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters', headers)
+if len(vcenters) == 0 :
+  sys.exit(0)
+# Build order
+print('Verify NFS cluster')
+cluster_request = instance_request.copy()
+del cluster_request['name']
+del cluster_request['subdomain']
+del cluster_request['root_domain']
+del cluster_request['vsphere_version']
+del cluster_request['dns_type']
+del cluster_request['domain_type']
+cluster_request['cluster_name']   = 'cluster02'
+cluster_request['is_default_pod'] = True
+result = apihelper.timed_json_post('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s/clusters?verify_only=true' % vcenters[0]['id'], cluster_request, headers)
+pprint.pprint(result); print()
+
+# Perform an add host verification
+print('Get clusters')
+clusters = apihelper.timed_json_get('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s/clusters' % vcenters[0]['id'], headers)
+if len(clusters) == 0 :
+  sys.exit(0)
+print('Verify add host')
+addhost_request = {
+  'quantity'         : 1,
+  'maintenance_mode' : True,
+}
+result = apihelper.timed_json_post('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s/clusters/%s/hosts?verify_only=true' % (vcenters[0]['id'], clusters[0]['id']), addhost_request, headers)
 pprint.pprint(result); print()
 
