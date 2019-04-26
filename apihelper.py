@@ -11,6 +11,7 @@ import requests, sys, timeit
 def check_results(resp, uri) :
   if resp.status_code != 200 :
     print("Error %d invoking %s" % (resp.status_code, uri))
+    print resp.text
     sys.exit(1)
 # Helper for timing and checking a request
 def timed_json_get(uri, headers) :

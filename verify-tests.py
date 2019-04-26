@@ -43,6 +43,10 @@ pprint.pprint(vers); print()
 
 # Perform a verification for an NFS instance
 print('Verify NFS instance')
+# Preselect server and ensure we choose RAM appropriate for that CPU type
+server = random.choice(cpus)['id']
+server_ram = random.choice([x for x in ram if server in x['supported_server_types']])['id']
+# Preselect Endurance tier
 shared_storage = random.choice(nfs)
 request = {
   'name'            : 'test01',
@@ -56,8 +60,8 @@ request = {
       'template_id'         : "1",
       'quantity'            : 2,
       'customized_hardware' : {
-          'server'           : random.choice(cpus)['id'],
-          'ram'              : random.choice(ram)['id'],
+          'server'           : server,
+          'ram'              : server_ram,
           'disks'            : [],
           'vsan_cache_disks' : []
         },
