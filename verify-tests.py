@@ -58,7 +58,6 @@ instance_request = {
   'dns_type'        : 'vsi',
   'domain_type'     : 'primary',
   'hardware'        : {
-      'template_id'         : "1",
       'quantity'            : 2,
       'customized_hardware' : {
           'server'           : server,

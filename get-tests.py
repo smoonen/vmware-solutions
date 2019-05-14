@@ -24,6 +24,10 @@ print('vCenter[0] details')
 json = apihelper.timed_json_get('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s' % vcenter_id, headers)
 pprint.pprint(json); print()
 
+print('vCenter[0] instance history')
+json = apihelper.timed_json_get('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s/history' % vcenter_id, headers)
+pprint.pprint(json); print()
+
 print('vCenter[0] clusters')
 json = apihelper.timed_json_get('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s/clusters' % vcenter_id, headers)
 pprint.pprint(json); print()
