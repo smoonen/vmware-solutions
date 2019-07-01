@@ -40,3 +40,7 @@ print('vcenter[0] clusters[0]')
 json = apihelper.timed_json_get('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s/clusters/%s' % (vcenter_id, cluster_id), headers)
 pprint.pprint(json); print()
 
+print('vcenter[0] clusters[0] network details')
+json = apihelper.timed_json_get('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s/clusters/%s/vlans' % (vcenter_id, cluster_id), headers)
+pprint.pprint(json); print()
+
