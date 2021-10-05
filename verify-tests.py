@@ -1,8 +1,5 @@
 # Issue various order verification API calls, printing results and timings
-# Compatible with Python2 and Python3
-# Requires "requests" module:
-#   py2: sudo pip install requests
-#   py3: sudo python3 -m pip install requests
+# Requires "requests" module: sudo python3 -m pip install requests
 
 from __future__ import print_function
 import apihelper
