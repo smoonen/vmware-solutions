@@ -44,6 +44,8 @@ pprint.pprint(vers); print()
 # Perform an order verification for an NFS instance
 print('Verify NFS instance')
 # Preselect server and ensure we choose RAM appropriate for that CPU type
+# NOTE: With the increase in bill-of-materials variations, there is a significant chance that the
+# configuration we settle on will result in an error.
 server = random.choice(cpus)['id']
 server_ram = random.choice([x for x in ram if server in x['supported_server_types']])['id']
 # Preselect Endurance tier
