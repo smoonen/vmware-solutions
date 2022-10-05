@@ -142,3 +142,12 @@ addhost_request = {
 result = apihelper.timed_json_post('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s/clusters/%s/hosts?verify_only=true&check_price=true' % (vcenters[0]['id'], clusters[0]['id']), addhost_request, headers)
 pprint.pprint(result); print()
 
+# Perform an add storage verification
+headers['x-global-transaction-id'] = str(uuid.uuid4())
+print('Verify add storage (%s)' % headers['x-global-transaction-id'])
+addstorage_request = {
+  'shared_storages' : instance_request['management']['shared_storages']
+}
+result = apihelper.timed_json_post('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s/clusters/%s/shared_storages?verify_only=true&check_price=true' % (vcenters[0]['id'], clusters[0]['id']), addstorage_request, headers)
+pprint.pprint(result); print()
+
