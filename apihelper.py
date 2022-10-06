@@ -52,8 +52,8 @@ def authenticate() :
     'grant_type' : 'urn:ibm:params:oauth:grant-type:apikey',
     'apikey'     : apikey.APIKEY,
   }
-  resp = requests.post('https://iam.bluemix.net/identity/token', data = params, headers = headers)
-  check_results(resp, 'https://iam.bluemix.net/identity/token')
+  resp = requests.post('https://iam.cloud.ibm.com/identity/token', data = params, headers = headers)
+  check_results(resp, 'https://iam.cloud.ibm.com/identity/token')
   json = resp.json()
   headers['Authorization'] = 'Bearer %s' % json['access_token']
   headers['X-Auth-Refresh-Token'] = json['refresh_token']
