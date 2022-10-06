@@ -100,7 +100,7 @@ if len(vcenters) == 0 :
 # Get instance cluster detail
 headers['x-global-transaction-id'] = str(uuid.uuid4())
 print('Get network details for first existing cluster (%s)' % headers['x-global-transaction-id'])
-vcenter_cluster0_networks = apihelper.timed_json_get('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s/clusters/%s/vlans' % (vcenters[0]['id'], 0), headers)
+vcenter_cluster0_networks = apihelper.timed_json_get('https://api.vmware-solutions.cloud.ibm.com/v1/vcenters/%s/clusters/%s/vlans' % (vcenters[0]['id'], '0'), headers)
 # Build order
 headers['x-global-transaction-id'] = str(uuid.uuid4())
 print('Verify NFS cluster (%s)' % headers['x-global-transaction-id'])
