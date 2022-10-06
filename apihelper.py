@@ -6,11 +6,11 @@ import requests, sys, timeit
 
 # Helper for checking response code
 def check_results(resp, uri) :
-  if resp.status_code != 200 :
+  if resp.status_code not in (200, 202) :
     print("Error %d invoking %s" % (resp.status_code, uri))
     print(resp.text)
     sys.exit(1)
-# Helper for timing and checking a request
+# Helpers for timing and checking a request
 def timed_json_get(uri, headers) :
   start = timeit.default_timer()
   resp = requests.get(uri, headers = headers)
@@ -23,6 +23,22 @@ def timed_json_post(uri, params, headers) :
   h2['Content-Type'] = 'application/json'
   start = timeit.default_timer()
   resp = requests.post(uri, json = params, headers = h2)
+  end = timeit.default_timer()
+  check_results(resp, uri)
+  print('Elapsed: %f' % (end - start))
+  return resp.json()
+def timed_json_patch(uri, params, headers) :
+  h2 = headers.copy()
+  h2['Content-Type'] = 'application/json'
+  start = timeit.default_timer()
+  resp = requests.patch(uri, json = params, headers = h2)
+  end = timeit.default_timer()
+  check_results(resp, uri)
+  print('Elapsed: %f' % (end - start))
+  return resp.json()
+def timed_json_delete(uri, headers) :
+  start = timeit.default_timer()
+  resp = requests.delete(uri, headers = headers)
   end = timeit.default_timer()
   check_results(resp, uri)
   print('Elapsed: %f' % (end - start))
