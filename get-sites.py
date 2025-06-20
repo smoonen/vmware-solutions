@@ -16,7 +16,10 @@ for region in regions :
   for site in sites['director_sites'] :
     print(f"Site '{site['name']}', ID {site['id']}, in region {region}")
     for pvdc in site['pvdcs'] :
-      provider_type = ', '.join([x['name'] for x in pvdc['provider_types']])
+      if 'provider_types' in pvdc :     # May not be set if creating or deleting
+        provider_type = ', '.join([x['name'] for x in pvdc['provider_types']])
+      else :
+        provider_type = 'unknown'
       print(f"  pVDC '{pvdc['name']}', ID {pvdc['id']}, in location {pvdc['data_center_name']} supporting provider types: {provider_type}")
 
   sites = requests.get(f"https://api.{region}.vmware.cloud.ibm.com/v1/multitenant_director_sites", headers = headers).json()
