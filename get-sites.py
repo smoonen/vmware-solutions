@@ -1,5 +1,5 @@
 # Retrieve the list of VCFaaS sites, both single-tenant and multi-tenant, and their pVDCs
-# Requires "requests" module: sudo python3 -m pip install requests
+# Requires "requests" module: python3 -m pip install requests
 
 import apihelper
 import requests, pprint, sys
